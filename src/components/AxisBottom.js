@@ -1,30 +1,26 @@
-export const AxisBottom = ({xScale, innerHeight, offset=5}) => {
+export const AxisBottom = ({xScale, yScale, scaleOffset}) => {
+    const [xStart, xEnd] = xScale.range();
+    const [, yEnd] = yScale.range();
+    const ticks = xScale.ticks();
     return (
-        <g transform={`translate(0, ${innerHeight})`}>
-            <line
-                // x1={xScale.range()[0]}
-                x2={xScale.range()[1]}
-                
-                stroke={'black'}
-            />
-            {xScale.domain().map(tickValue => (
-                <>
-                    <line
-                        x1={xScale(tickValue)}
-                        x2={xScale(tickValue)}
-                        y2={innerHeight}
-                        stroke={"black"}
-                    />         
-                    <text 
-                        key={`botAxis${tickValue}`}
-                        x={xScale(tickValue) + xScale.bandwidth() /3}
-                        y={innerHeight + offset * 4}
-                        dy={'1.2em'}
-                    >
-                        {tickValue}
-                    </text>
-                </>
-            ))}
-        </g>
+        <>
+            <line className='axisLine' x1={xStart} x2={xEnd} y1={yEnd} y2={yEnd} />
+            <g className="ticks">
+                {ticks.map((t, i) => {
+                    const x = xScale(t);
+                    return (
+                    <>
+                        <line x1={x} x2={x} y1={yEnd} y2={yEnd + scaleOffset}/>
+                        <text
+                        x={x}
+                        y={yEnd + scaleOffset * 5}
+                        >
+                        {t}
+                        </text>
+                    </>
+                    );
+                })}
+            </g>
+        </>
     );
-    };
+};

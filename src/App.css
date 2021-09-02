@@ -1,3 +1,12 @@
-.tick line{
+.ticks line{
+  stroke: #C0C0BB;
+  
+}
+.ticks text{
+  fill: #C0C0BB;
+  text-anchor: middle;
+  font-size: 1em;
+}
+.axisLine{
   stroke: #C0C0BB;
 }
