@@ -2,7 +2,7 @@
   stroke: #C0C0BB;
   
 }
-.ticks text{
+.tickText{
   fill: #C0C0BB;
   text-anchor: middle;
   font-size: 1em;

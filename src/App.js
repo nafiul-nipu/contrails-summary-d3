@@ -1,8 +1,7 @@
 import {scaleLinear, 
   scaleOrdinal,
-  symbolDiamond, 
-  symbolSquare, 
-  symbolTriangle } from 'd3';
+  scaleBand
+ } from 'd3';
 import './App.css';
 
 import { useData } from './components/useData';
@@ -10,6 +9,7 @@ import {AxisBottom} from './components/AxisBottom'
 import { AxisLeft } from './components/AxisLeft';
 import { getDataExtents } from './components/getDataExtents';
 import { Contrails } from './components/Contrails';
+import { VolumeTempView } from './components/VolumeTempView';
 
 
 
@@ -20,11 +20,8 @@ const margin = {top:20, right:30, bottom:50, left:60};
 const attributes = ["Timesteps", "TotalParticles", "Ice", "TotalIcePercentage", "Temp", "IceVolume"]
 
 const contrails = ["Contrails 1", "Contrails 2", "Contrails 3"];
-const symbols = [symbolDiamond, symbolSquare, symbolTriangle];
-const shapeSize = [50, 200]
 
-const scatterOffset = -8
-const scaleOffset = 5
+const scaleOffset = 10
 
 function App() {
   const {con1Data, con2Data, con3Data} = useData();
@@ -40,28 +37,19 @@ function App() {
   const innerWidth = width - margin.left - margin.right;
 
 
+  console.log(con1Data)
 
   let dataExtents = getDataExtents(con1Data, con2Data, con3Data, attributes)
-  // console.log(dataExtents)
+  console.log(dataExtents)
 
-  const xScale = scaleLinear()
-                  .domain([0.05, dataExtents.Timesteps[1]])
-                  .range([0, innerWidth])
+  const xValue = (d) => d.Timesteps
 
-  const yScale = scaleLinear()
-                  .domain(dataExtents.IceVolume)
-                  .range([0, innerHeight])
+  const xScale = scaleBand()
+    .domain(con1Data.map(xValue))
+    .range([0, innerWidth])
+    .paddingInner(0.1)
 
-  const color = scaleLinear()
-                .domain(dataExtents.Temp)
-                .range(["#fee0d2", "#de2d26"])
 
-  const shapes = scaleOrdinal()
-                  .domain(contrails)
-                  .range(symbols)
-  const symSize = scaleLinear()
-                .domain(dataExtents.Ice)
-                .range(shapeSize)
 
   return (
 
@@ -69,16 +57,25 @@ function App() {
       <g transform={`translate(${margin.left}, ${margin.top})`}>
           <AxisBottom 
             xScale={xScale}
-            yScale = {yScale}
-            scaleOffset={scaleOffset}
-          />
-          <AxisLeft
-            xScale={xScale}
-            yScale = {yScale}
+            innerHeight={innerHeight}
+            innerWidth={innerWidth}
             scaleOffset={scaleOffset}
           />
 
-          <g transform={`translate(0, ${scatterOffset})`}>
+          <VolumeTempView 
+            data={con1Data}
+            volume={dataExtents.IceVolume}
+            temperature={dataExtents.Temp}
+            xScale={xScale}
+            innerHeight={innerHeight}
+          />
+          {/* <AxisLeft
+            xScale={xScale}
+            yScale = {yScale}
+            scaleOffset={scaleOffset}
+          /> */}
+
+          {/* <g transform={`translate(0, ${scatterOffset})`}>
 
             <Contrails
               data={con1Data}
@@ -110,7 +107,7 @@ function App() {
               color = {color}
             />
 
-          </g>
+          </g> */}
         </g>
     </svg>
   );
