@@ -10,3 +10,7 @@
 .axisLine{
   stroke: #C0C0BB;
 }
+
+.area-volume{
+  opacity: 0.3;
+}

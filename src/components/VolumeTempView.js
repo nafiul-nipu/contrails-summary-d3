@@ -1,13 +1,14 @@
 import { scaleLinear } from "d3-scale"
 import { area } from "d3-shape"
-import { interpolateOranges, interpolatePRGn} from "d3-scale-chromatic"
+
 
 export const VolumeTempView =({
     data,
     volume,
     temperature,
     xScale,
-    innerHeight
+    innerHeight,
+    scaleOffset
 }) => {
     const volumeScale = scaleLinear()
         .domain([0, volume[1]])
@@ -21,12 +22,12 @@ export const VolumeTempView =({
 
     console.log(temperature)
     return(
-        <>
+        <g transform={`translate(${xScale.bandwidth() / 2},-${scaleOffset})`}>
             <linearGradient
                 id="myGradient"
             >
                 <stop offset="5%"  stopColor="gold" />
-      <stop offset="95%" stopColor="red" />
+                <stop offset="100%" stopColor="red" />
                 {/* {data.map((each, i) => 
                 {
                     console.log(each.Temp, interpolateOranges(tempColor(each.Temp)))
@@ -37,14 +38,16 @@ export const VolumeTempView =({
                 })} */}
             </linearGradient>
             <path 
-            fill="url('#myGradient')"
+                className="area-volume"
+                fill="url('#myGradient')"
                 d={area()
                     .x((d) => xScale(d.Timesteps))
                     .y0(volumeScale(0))
                     .y1((d) => volumeScale(d.IceVolume))
                     (data)
                 }
+
             />
-        </>
+        </g>
     )
 }

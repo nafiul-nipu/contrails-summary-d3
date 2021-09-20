@@ -40,7 +40,7 @@ function App() {
   const innerWidth = width - margin.left - margin.right;
 
 
-  console.log(con1Data)
+  // console.log(con1Data)
 
   let dataExtents = getDataExtents(con1Data, con2Data, con3Data, attributes)
   console.log(dataExtents)
@@ -50,11 +50,11 @@ function App() {
   const xScale = scaleBand()
     .domain(con1Data.map(xValue))
     .range([0, innerWidth])
-    .paddingInner(0.1)
+    .paddingInner(0.4)
 
   console.log(dataExtents.TotalParticles)
   const yScale = scaleLinear()
-    .domain(dataExtents.TotalParticles)
+    .domain([0, dataExtents.TotalParticles[1]])
     .range([innerHeight, 0])
 
   const barColor = scaleOrdinal()
@@ -75,19 +75,20 @@ function App() {
             innerWidth={innerWidth}
             scaleOffset={scaleOffset}
           />
-
           <VolumeTempView 
             data={con1Data}
             volume={dataExtents.IceVolume}
             temperature={dataExtents.Temp}
             xScale={xScale}
             innerHeight={innerHeight}
+            scaleOffset = {scaleOffset}
           />
 
+          <g transform={`translate(0, -${scaleOffset})`}>
           {
             barAtt.map((bar, i) => (
 
-              <OverlayRect 
+            <OverlayRect 
               xScale = {xScale}
               yScale = {yScale}
               data={con1Data}
@@ -98,6 +99,9 @@ function App() {
 
             ))
           }
+          </g>
+
+          
 
           {/* <AxisLeft
             xScale={xScale}
@@ -105,39 +109,6 @@ function App() {
             scaleOffset={scaleOffset}
           /> */}
 
-          {/* <g transform={`translate(0, ${scatterOffset})`}>
-
-            <Contrails
-              data={con1Data}
-              contrails={contrails[0]}
-              shapes = {shapes} 
-              symSize = {symSize} 
-              xScale = {xScale} 
-              yScale = {yScale} 
-              color = {color}
-            />
-
-            <Contrails
-              data={con2Data}
-              contrails={contrails[1]}
-              shapes = {shapes} 
-              symSize = {symSize} 
-              xScale = {xScale} 
-              yScale = {yScale} 
-              color = {color}
-            />
-
-            <Contrails
-              data={con2Data}
-              contrails={contrails[2]}
-              shapes = {shapes} 
-              symSize = {symSize} 
-              xScale = {xScale} 
-              yScale = {yScale} 
-              color = {color}
-            />
-
-          </g> */}
         </g>
     </svg>
   );
