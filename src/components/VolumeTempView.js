@@ -24,26 +24,28 @@ export const VolumeTempView =({
     console.log(temperature)
     return(
         <g transform={`translate(${xScale.bandwidth() / 2},-${scaleOffset})`}>
-            <linearGradient
-                id="myGradient"
-            >
-                {data.map((each, i) => 
-                {
-                    console.log(each.Temp, tempColor(each.Temp))
-                    return(
-                    <>
-                        <stop
-                            offset={bands * (i)}
-                            stopColor={tempColor(each.Temp)}
-                        />
-                        {/* <stop
-                            offset={bands * (i+1)}
-                            stopColor={tempColor(each.Temp)}
-                        /> */}
-                    </>
-                    )
-                })}
-            </linearGradient>
+            <defs>
+                <linearGradient
+                    id="myGradient"
+                >
+                    {data.map((each, i) => 
+                    {
+                        console.log(each.Temp, tempColor(each.Temp))
+                        return(
+                        <>
+                            <stop
+                                offset={bands * (i)}
+                                stopColor={tempColor(each.Temp)}
+                            />
+                            {/* <stop
+                                offset={bands * (i+1)}
+                                stopColor={tempColor(each.Temp)}
+                            /> */}
+                        </>
+                        )
+                    })}
+                </linearGradient>
+            </defs>
             <path 
                 className="area-volume"
                 // fill={(d,i) => {
