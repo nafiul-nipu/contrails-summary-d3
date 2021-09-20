@@ -15,7 +15,7 @@ export const useData = () => {
         d.Timesteps = +d.Timesteps
         d.TotalParticles = +d.TotalParticles
         d.Ice = +d.Ice
-        d.TotalIcePercentage = +d.TotalIcePercentage
+        d.NewIce = +d.NewIce
         d.Temp = +d.Temp
         d.IceVolume = +d.IceVolume
         return d

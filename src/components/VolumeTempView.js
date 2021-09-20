@@ -25,8 +25,8 @@ export const VolumeTempView =({
             <linearGradient
                 id="myGradient"
             >
-                <stop offset="5%"  stop-color="gold" />
-      <stop offset="95%" stop-color="red" />
+                <stop offset="5%"  stopColor="gold" />
+      <stop offset="95%" stopColor="red" />
                 {/* {data.map((each, i) => 
                 {
                     console.log(each.Temp, interpolateOranges(tempColor(each.Temp)))

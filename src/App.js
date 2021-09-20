@@ -10,6 +10,7 @@ import { AxisLeft } from './components/AxisLeft';
 import { getDataExtents } from './components/getDataExtents';
 import { Contrails } from './components/Contrails';
 import { VolumeTempView } from './components/VolumeTempView';
+import { OverlayRect } from './components/OverlayRect';
 
 
 
@@ -17,9 +18,11 @@ const width = 950;
 const height = 500;
 const margin = {top:20, right:30, bottom:50, left:60};
 
-const attributes = ["Timesteps", "TotalParticles", "Ice", "TotalIcePercentage", "Temp", "IceVolume"]
+const attributes = ["Timesteps", "TotalParticles", "Ice", "NewIce", "Temp", "IceVolume"]
 
 const contrails = ["Contrails 1", "Contrails 2", "Contrails 3"];
+
+const barAtt = ["TotalParticles", "Ice", "NewIce"]
 
 const scaleOffset = 10
 
@@ -49,6 +52,17 @@ function App() {
     .range([0, innerWidth])
     .paddingInner(0.1)
 
+  console.log(dataExtents.TotalParticles)
+  const yScale = scaleLinear()
+    .domain(dataExtents.TotalParticles)
+    .range([innerHeight, 0])
+
+  const barColor = scaleOrdinal()
+    .domain(barAtt)
+    .range(["#66c2a5", "#fc8d62", "#8da0cb"])
+
+
+
 
 
   return (
@@ -69,6 +83,22 @@ function App() {
             xScale={xScale}
             innerHeight={innerHeight}
           />
+
+          {
+            barAtt.map((bar, i) => (
+
+              <OverlayRect 
+              xScale = {xScale}
+              yScale = {yScale}
+              data={con1Data}
+              toDraw = {barAtt[i]}
+              innerHeight = {innerHeight}
+              color = {barColor}
+            />
+
+            ))
+          }
+
           {/* <AxisLeft
             xScale={xScale}
             yScale = {yScale}
