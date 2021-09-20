@@ -24,26 +24,33 @@ export const VolumeTempView =({
     console.log(temperature)
     return(
         <g transform={`translate(${xScale.bandwidth() / 2},-${scaleOffset})`}>
-            {/* <linearGradient
+            <linearGradient
                 id="myGradient"
             >
-                <stop offset="5%"  stopColor="gold" />
-                <stop offset="100%" stopColor="red" />
                 {data.map((each, i) => 
                 {
-                    console.log(each.Temp, interpolateOranges(tempColor(each.Temp)))
-                    return(<stop
-                        offset={bands * (i+1)}
-                        stopColor={interpolatePRGn(tempColor(each.Temp))}
-                    />)
+                    console.log(each.Temp, tempColor(each.Temp))
+                    return(
+                    <>
+                        <stop
+                            offset={bands * (i)}
+                            stopColor={tempColor(each.Temp)}
+                        />
+                        {/* <stop
+                            offset={bands * (i+1)}
+                            stopColor={tempColor(each.Temp)}
+                        /> */}
+                    </>
+                    )
                 })}
-            </linearGradient> */}
+            </linearGradient>
             <path 
                 className="area-volume"
-                fill={(d,i) => {
-                    console.log(tempColor(d.Temp))
-                    return tempColor(d.Temp)
-                }}
+                // fill={(d,i) => {
+                //     console.log(tempColor(d.Temp))
+                //     return tempColor(d.Temp)
+                // }}
+                fill='url(#myGradient)'
                 stroke="black"
                 strokeWidth='2px'
                 d={area()
@@ -52,8 +59,10 @@ export const VolumeTempView =({
                     .y1((d) => volumeScale(d.IceVolume))
                     (data)
                 }
+            >
+                {/* <title>{d.IceVolume + "   " + d.Temp}</title> */}
+            </path>
 
-            />
         </g>
     )
 }
