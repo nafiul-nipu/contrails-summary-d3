@@ -59,7 +59,7 @@ function App() {
 
   const barColor = scaleOrdinal()
     .domain(barAtt)
-    .range(["#66c2a5", "#fc8d62", "#8da0cb"])
+    .range(["#C1BAA9", "#978F80", "#7C715E"])
 
 
 
