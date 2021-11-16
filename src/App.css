@@ -1,16 +1,5 @@
-.ticks line{
-  stroke: #C0C0BB;
-  
-}
-.tickText{
-  fill: #C0C0BB;
-  text-anchor: middle;
-  font-size: 1em;
-}
-.axisLine{
-  stroke: #C0C0BB;
+.App {
+  font-family: sans-serif;
+  text-align: center;
 }
 
-.area-volume{
-  /* opacity: 0.3; */
-}
