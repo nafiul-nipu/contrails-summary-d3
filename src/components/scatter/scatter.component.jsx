@@ -8,61 +8,50 @@ class Scatter extends React.Component{
         super(props);
         this.scatterId = React.createRef();
 
+        this.promises = []
+        // this.data = null
+        this.xDomain = null
+        this.yDomain = null
+
+        this.dataTime = {
+            contrails1: [0.1,0.11,0.12,0.13,0.14,0.15,0.16,0.17,0.18,0.19,0.2],
+            contrails2: [0.1,0.11,0.12,0.13,0.14,0.15,0.16,0.17,0.18,0.19,0.2],
+            contrails3: [0.1,0.11,0.12,0.13,0.14,0.15,0.16,0.17,0.18,0.19,0.2],
+            newData:[210,211,212,213,214,215,216,217,218,219]
+        }
+
         this.state = {
 
         }
     }
 
     componentDidMount(){
-        // console.log(this.props.folder, this.props.time)
+                // console.log('component did mount')
+                var val = this.props.value;
+                console.log("component did mount", val)
+                const self = this
+                this.dataTime[val].forEach(el => {
+                    let url = `https://raw.githubusercontent.com/nafiul-nipu/contrails-scatter-tree-evolution-d3/master/src/data/particles/${val}/${el}.json`
+                    self.promises.push(d3.json(url))
+                })
+                Promise.all(self.promises).then(function(files) {            
+        
+                    if(self.props.value === 'newData'){
+                        self.xDomain = {max: 60}
+                        self.yDomain = {min: -5, max: 5}
+                    }else{
+                        self.xDomain = {max: 16}
+                        self.yDomain = {min: -2, max: 2}
+                    }
 
-        // if(this.props.time === 0.2){
-            let url = `https://raw.githubusercontent.com/nafiul-nipu/contrails-scatter-tree-evolution-d3/master/src/data/particles/${this.props.folder}/${this.props.time}.json`
-
-            let xDomain = {} ;
-            let yDomain = {};
-
-            // console.log(this.props.time)
-            // const row = d => {
-            //     d['X'] = +d['X'];
-            //     d['Y'] = +d['Y'];
-
-            //     xDomain.max = Math.max(xDomain.max || -Infinity, +d['X']);
-            //     yDomain.max = Math.max(yDomain.max || -Infinity, +d['Y']);
-
-            //     xDomain.min = Math.min(xDomain.min || Infinity, +d['X']);
-            //     yDomain.min = Math.min(yDomain.min || Infinity, +d['Y']);
-
-            //     return d
-
-            // }
-
-            d3.json(url).then(data => {
-                
-                // data.forEach(element => {
-                //     row(element)
-                // });
-
-                // console.log(data)
-                if(this.props.folder === 'newData'){
-                    xDomain = {max: 60}
-                    yDomain = {min: -5, max: 5}
-                }else{
-                    xDomain = {max: 16}
-                    yDomain = {min: -2, max: 2}
-                }
-            
-                new LineD3(this.scatterId.current, data, xDomain, yDomain, this.props.id)
-                
-            })
-
-
-        // }
+                    new LineD3(self.scatterId.current, files, self.xDomain, self.yDomain)
+                })
+        
     }
 
     render(){
         return(
-            <div ref={this.scatterId}>{this.props.time}</div>
+            <div ref={this.scatterId}>{this.props.value}</div>
         )
     }
 }
